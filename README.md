@@ -20,5 +20,13 @@ Once you have you CSV file in this directory, run `./gen_site.sh`.
 Run `./server.py` **with this directory as the working directory (cwd)**. That
 will open a connection in `localhost` with port 8080.
 
-Open a browser with javacript enabled (any modern-ish browser should do), then
+Open a browser with javascript enabled (any modern-ish browser should do), then
 connect to `http://localhost:8080`.
+
+### Dependencies
+
+The python script depends on:
+
+- `re`
+- `http`: `server`
+- `requests`
