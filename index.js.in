@@ -1,0 +1,85 @@
+const yt_channels_len = yt_channels.length;
+
+var yt_channel_i = 0; // < `yt_channels_len'
+
+var thumnails = [];
+var thumb_i = 1;
+
+function thumb_next() {
+    if (thumb_i <= thumbnails.length) {
+        ++thumb_i;
+        document.getElementById("channel-avatar").src = thumbnails[thumb_i].url;
+    }
+}
+
+function thumb_prev() {
+    if (thumb_i >= 0) {
+        --thumb_i;
+        document.getElementById("channel-avatar").src = thumbnails[thumb_i].url;
+    }
+}
+
+async function populate_json(ytInitialData, id) {
+    thumb_i = 1;
+    thumbnails = ytInitialData.header.c4TabbedHeaderRenderer.avatar.thumbnails;
+
+    let channel_avatar_url = thumbnails[thumb_i].url;
+    // let channel_title = ytInitialData.header.c4TabbedHeaderRenderer.title;
+    let videos = ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs[1].tabRenderer.content.richGridRenderer.contents;
+
+    let videos_i = videos.length < 3 ? videos.length : 3;
+
+    document.getElementById("channel-vid-amount").innerText = `channel has at least ${videos_i} videos`;
+
+    document.getElementById("channel-avatar").src = channel_avatar_url;
+    // document.getElementById("channel-name").innerText = channel_title;
+    document.getElementById("channel-link").href = `https://www.youtube.com/channel/${id}`;
+
+    while (videos_i > 0) {
+        let r = videos[videos_i].richItemRenderer.content.videoRenderer;
+
+        document.getElementById(`channel-vid${videos_i}-thumb`).src =  r.thumbnail.thumbnails[2].url;
+        document.getElementById(`channel-vid${videos_i}-desc`).innerText = `${r.title.runs[0].text} [${r.lengthText.simpleText}] (${r.publishedTimeText.simpleText}) (${r.viewCountText.simpleText})`;
+
+        --videos_i;
+    }
+}
+
+async function fetch_yt_channel_at() {
+    let value = document.getElementById("channel-at").value;
+    yt_channel_i = value;
+
+    document.getElementById("channel-at").value = "";
+
+    if (yt_channel_i >= yt_channels_len) return;
+
+    let channel = yt_channels[yt_channel_i];
+
+    document.getElementById("channel-name").innerText = channel.name;
+    document.getElementById("buttons-count").innerText = `${yt_channel_i}/${yt_channels_len}`;
+
+    const res = await fetch(`id/${channel.id}`);
+    const json = await res.json();
+    populate_json(json, channel.id);
+}
+
+function fetch_yt_channel_at_ev() {
+    if (event.key === "Enter") {
+        fetch_yt_channel_at();
+    }
+}
+
+async function fetch_yt_channel() {
+    if (yt_channel_i >= yt_channels_len) return;
+    ++yt_channel_i;
+
+    let channel = yt_channels[yt_channel_i];
+
+    document.getElementById("buttons-count").innerText = `${yt_channel_i}/${yt_channels_len}`;
+    document.getElementById("channel-name").innerText = channel.name;
+
+    const res = await fetch(`id/${channel.id}`);
+    const json = await res.json();
+    populate_json(json, channel.id);
+}
+

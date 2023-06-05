@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="icon" href="data:;base64,=">
+    <script src="index.js"></script>
+    <style>
+      html {background-color: #1a1a1a; color: #ffffff;}
+      .title-center {text-align: center;}
+    </style>
+    <title>YouTube channel browser</title>
+  </head>
+  <body class="doc-body">
+    <h1 class="title-center">Youtube channel browser</h1>
+    <div class="channel-displayer" id="channel-displayer">
+      <a id="channel-link" target="_blank">
+        <img id="channel-avatar"></img>
+      </a>
+      <div id="channel-name"></div>
+
+      <div id="channel-vid-amount"></div>
+
+      <div id="channel-vid1">
+        <img id="channel-vid1-thumb"></img>
+        <div id="channel-vid1-desc"></div>
+      </div>
+      <div id="channel-vid2">
+        <img id="channel-vid2-thumb"></img>
+        <div id="channel-vid2-desc"></div>
+      </div>
+      <div id="channel-vid3">
+        <img id="channel-vid3-thumb"></img>
+        <div id="channel-vid3-desc"></div>
+      </div>
+    </div>
+    <div id="buttons">
+      <span id="buttons-count">0/@BUTTONS-COUNT@</span>
+      <button onclick="fetch_yt_channel()"> next </button>
+      <label for="channel-at">Channel at: </label>
+      <input type="text"
+             id="channel-at"
+             onkeydown="fetch_yt_channel_at_ev()">
+      </input>
+      <!-- <button onclick="fetch_yt_channel_at()">Go</button> -->
+    </div>
+    <div id="buttons2">
+      <button onclick="thumb_next()">Next thumbnail</button>
+      <button onclick="thumb_prev()">Prev thumbnail</button>
+    </div>
+  </body>
+</html>
